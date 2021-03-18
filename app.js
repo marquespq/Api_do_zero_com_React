@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 require("./models/Artigo");
 const Artigo = mongoose.model('artigo');
@@ -7,6 +8,14 @@ const Artigo = mongoose.model('artigo');
 const app = express();
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+    //console.log("Acessou o Middleware!");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Controll-Allow-Methods", 'GET, PUT, POST, DELETE')
+    app.use(cors());
+    next();
+});
 
 mongoose.connect('mongodb://localhost/minhaapi',{
     useNewUrlParser:true,
@@ -28,6 +37,19 @@ app.get("/", (req, res)=>{
     })
 });
 
+app.get("/artigo/:id", (req, res)=> {
+    Artigo.findOne({_id:req.params.id}).then((artigo) =>{
+        return res.json(artigo);
+    }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum artigo encontrado!"
+        })
+    })
+
+    return res.json({id: req.params.id})
+})
+
 app.post("/artigo", (req, res) => {
     const artigo = Artigo.create(req.body, (err) =>{
         if(err) return res.status(400).json({
@@ -37,6 +59,32 @@ app.post("/artigo", (req, res) => {
         return res.status(200).json({
             error: false,
             message: "Artigo cadastrado com sucesso!"
+        })
+    })
+})
+
+app.put("/artigo/:id", (req, res) =>{
+    const artigo = Artigo.updateOne({_id: req.params.id}, req.body, (err) => {
+        if(err) return res.status(400).json({
+            error: true,
+            message: "Erro: artigo não foi editado!"
+        });
+        return res.json({
+            error: false,
+            message: "Artigo editado com sucesso"
+        })
+    })
+});
+
+app.delete("/artigo/:id", (req, res) => {
+    const artigo = Artigo.deleteOne({_id: req.params.id}, (err) =>{
+        if(err) return res.status(400).json({
+            error: true,
+            message: "Erro: Artigo não foi apagado!"
+        });
+        return res.json({
+            error: false,
+            message: "Artigo apagado com sucesso!"
         })
     })
 })

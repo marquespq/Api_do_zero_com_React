@@ -32,7 +32,7 @@ app.get("/", (req, res)=>{
     }).catch((erro) =>{
         return res.status(400).json({
             error: true,
-            message: "Nenhum artigo encontrado."
+            message: "Nenhum título encontrado."
         })
     })
 });
@@ -43,7 +43,7 @@ app.get("/artigo/:id", (req, res)=> {
     }).catch((erro) => {
         return res.status(400).json({
             error: true,
-            message: "Nenhum artigo encontrado!"
+            message: "Nenhum título encontrado!"
         })
     })
 
@@ -54,11 +54,11 @@ app.post("/artigo", (req, res) => {
     const artigo = Artigo.create(req.body, (err) =>{
         if(err) return res.status(400).json({
             error: true,
-            message: "Error: Artigo não foi cadastrado com sucesso!"
+            message: "Error: Titulo não foi cadastrado com sucesso!"
         })
         return res.status(200).json({
             error: false,
-            message: "Artigo cadastrado com sucesso!"
+            message: "Titulo cadastrado com sucesso!"
         })
     })
 })
@@ -67,11 +67,11 @@ app.put("/artigo/:id", (req, res) =>{
     const artigo = Artigo.updateOne({_id: req.params.id}, req.body, (err) => {
         if(err) return res.status(400).json({
             error: true,
-            message: "Erro: artigo não foi editado!"
+            message: "Erro: Titulo não foi editado!"
         });
         return res.json({
             error: false,
-            message: "Artigo editado com sucesso"
+            message: "Titulo editado com sucesso"
         })
     })
 });
@@ -80,11 +80,11 @@ app.delete("/artigo/:id", (req, res) => {
     const artigo = Artigo.deleteOne({_id: req.params.id}, (err) =>{
         if(err) return res.status(400).json({
             error: true,
-            message: "Erro: Artigo não foi apagado!"
+            message: "Erro: Titulo não foi apagado!"
         });
         return res.json({
             error: false,
-            message: "Artigo apagado com sucesso!"
+            message: "Titulo apagado com sucesso!"
         })
     })
 })

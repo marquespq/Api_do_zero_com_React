@@ -9,10 +9,19 @@ const Artigo = new mongoose.Schema({
         type: String,
         required: true
     },
-    autor:{
+    ano:{
         type: String,
         required:true
+    },
+    imagem:{
+        type: String,
+        required:true
+    },
+    gif :{
+        type: String,
+        required:false
     }
+    
 },
     {
         timestamps: true,
